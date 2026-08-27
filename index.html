@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>Квест для семьи ❤️</title>
+    <title>Сюрприз для семьи ❤️</title>
     <style>
         /* ---------- БАЗОВЫЕ СТИЛИ ---------- */
         * {
@@ -24,7 +24,7 @@
             padding: 20px;
         }
 
-        /* ---------- ОБЩИЙ КОНТЕЙНЕР ДЛЯ КВЕСТА И ГЛАВНОЙ ---------- */
+        /* ---------- ОБЩИЙ КОНТЕЙНЕР ДЛЯ ВСЕХ СТРАНИЦ ---------- */
         .page {
             display: none;
             text-align: center;
@@ -129,6 +129,17 @@
 
         .btn-next:active {
             transform: scale(0.95);
+        }
+
+        /* ---------- СТИЛИ ДЛЯ ПРИВЕТСТВИЯ ---------- */
+        .welcome-icon {
+            font-size: 5rem;
+            margin-bottom: 10px;
+        }
+        .welcome-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #2c3e50;
         }
 
         /* ---------- СТИЛИ ДЛЯ АНЕКДОТА ---------- */
@@ -334,6 +345,7 @@
             .page .question { font-size: 1.3rem; }
             .options button { font-size: 1.1rem; padding: 14px 20px; }
             .btn-next { font-size: 1.2rem; padding: 16px 40px; }
+            .welcome-icon { font-size: 4rem; }
             .main-page { padding: 25px 15px; }
             .main-page h1 { font-size: 2.2rem; }
             .family-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
@@ -356,9 +368,21 @@
 </head>
 <body>
 
-    <!-- ========== КВЕСТ: СТРАНИЦА 1 ========== -->
-    <div class="page active" id="quest1">
-        <h1>🔍 Квест!</h1>
+    <!-- ========== СТРАНИЦА 0: ПРИВЕТСТВИЕ ========== -->
+    <div class="page active" id="welcome">
+        <div class="welcome-icon">🌸</div>
+        <h1>Дорогие родственники!</h1>
+        <p class="welcome-text">
+            Мы решили сделать ваш день чуточку теплее и веселее.<br />
+            Пройдите небольшой квест, чтобы попасть в нашу семейную галерею с тёплыми пожеланиями.<br />
+            Готовы?
+        </p>
+        <button class="btn-next" onclick="startQuest()">Начать квест 🚀</button>
+    </div>
+
+    <!-- ========== КВЕСТ: СТРАНИЦА 1 (Вопрос 1) ========== -->
+    <div class="page" id="quest1">
+        <h1>🔍 Квест</h1>
         <p class="question">Какое главное хобби нашей семьи?</p>
         <div class="options">
             <button onclick="checkAnswer1('рыбалка')">🎣 Рыбалка</button>
@@ -367,7 +391,7 @@
         </div>
     </div>
 
-    <!-- ========== КВЕСТ: СТРАНИЦА 2 ========== -->
+    <!-- ========== КВЕСТ: СТРАНИЦА 2 (Вопрос 2) ========== -->
     <div class="page" id="quest2">
         <h1>🧮 Математика</h1>
         <p class="question">Сколько будет 2 + 2 × 2?</p>
@@ -404,18 +428,25 @@
 
     <script>
         // ============================================================
-        // 1. ФУНКЦИИ КВЕСТА
+        // 1. ФУНКЦИИ НАВИГАЦИИ
         // ============================================================
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
+        function startQuest() {
+            showPage('quest1');
+        }
+
+        // ============================================================
+        // 2. ФУНКЦИИ КВЕСТА
+        // ============================================================
         function checkAnswer1(answer) {
             if (answer === 'рыбалка') {
                 showPage('quest2');
             } else {
-                location.reload(); // перезагрузка при неправильном ответе
+                location.reload(); // перезагрузка – вернёт на приветствие
             }
         }
 
@@ -428,15 +459,13 @@
         }
 
         function goToMain() {
-            // Скрываем все квест-страницы и показываем главную
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('mainPage').classList.add('active');
-            // Запускаем конфетти для радости
             launchConfetti();
         }
 
         // ============================================================
-        // 2. ДАННЫЕ О СЕМЬЯХ (как было)
+        // 3. ДАННЫЕ О СЕМЬЯХ
         // ============================================================
         const families = [{
             id: 'babushka',
@@ -507,7 +536,7 @@
             petalColors: ['#2980b9', '#5499c7', '#85c1e9'],
             title: '🌊 Нурпеисовы',
             text: 'Нурпеисовы — вы как морской бриз!<br>Желаем вам глубины счастья, чистоты отношений и бесконечного вдохновения. Пусть всё у вас складывается легко и красиво.',
-           photo: [
+            photo: [
                 'https://i.imgur.com/MfqOHUB.jpg',
                 'https://imgur.com/qG4FILx.jpg'
             ] 
@@ -524,7 +553,7 @@
         }];
 
         // ============================================================
-        // 3. РЕНДЕРИНГ СЕМЕЙНЫХ КАРТОЧЕК
+        // 4. РЕНДЕРИНГ СЕМЕЙНЫХ КАРТОЧЕК
         // ============================================================
         const grid = document.getElementById('familyGrid');
         const container = document.getElementById('familyPagesContainer');
@@ -570,7 +599,7 @@
         });
 
         // ============================================================
-        // 4. ФУНКЦИИ ОТКРЫТИЯ/ЗАКРЫТИЯ СЕМЕЙ
+        // 5. ФУНКЦИИ ОТКРЫТИЯ/ЗАКРЫТИЯ СЕМЕЙ
         // ============================================================
         function openFamily(id) {
             document.getElementById('mainPage').classList.remove('active');
@@ -594,7 +623,7 @@
         }
 
         // ============================================================
-        // 5. ЛЕПЕСТКИ, ЭМОДЗИ, КОНФЕТТИ (без изменений)
+        // 6. ЛЕПЕСТКИ, ЭМОДЗИ, КОНФЕТТИ
         // ============================================================
         let petalInterval;
         let currentColors = ['#ffab91', '#ffcc80', '#ffd54f', '#ffab91'];
@@ -665,11 +694,10 @@
         }
 
         // ============================================================
-        // 6. ЗАПУСК
+        // 7. ЗАПУСК
         // ============================================================
         window.addEventListener('load', function() {
-            // Показываем первую страницу квеста (она уже активна по умолчанию)
-            // Остальные страницы скрыты
+            // По умолчанию активна страница приветствия (у неё класс active)
             startPetals(['#ffab91', '#ffcc80', '#ffd54f', '#ffab91']);
             createFloatingEmojis();
         });
