@@ -1,0 +1,710 @@
+ <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Сюрприз для семьи ❤️</title>
+    <style>
+        /* ---------- БАЗОВЫЕ СТИЛИ ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* ---------- ОБЩИЙ КОНТЕЙНЕР ДЛЯ ВСЕХ СТРАНИЦ ---------- */
+        .page {
+            display: none;
+            text-align: center;
+            padding: 30px 25px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            max-width: 550px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .page h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .page p {
+            font-size: 1.3rem;
+            color: #34495e;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .page .question {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .options button {
+            background: white;
+            border: 2px solid #bdc3c7;
+            padding: 16px 30px;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            max-width: 300px;
+            font-weight: 500;
+            color: #2c3e50;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .options button:hover {
+            transform: scale(1.03);
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .options button:active {
+            transform: scale(0.95);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border: none;
+            color: white;
+            padding: 18px 50px;
+            border-radius: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .btn-next:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(52, 152, 219, 0.6);
+        }
+
+        .btn-next:active {
+            transform: scale(0.95);
+        }
+
+        /* ---------- СТИЛИ ДЛЯ ПРИВЕТСТВИЯ ---------- */
+        .welcome-icon {
+            font-size: 5rem;
+            margin-bottom: 10px;
+        }
+        .welcome-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+
+        /* ---------- СТИЛИ ДЛЯ АНЕКДОТА ---------- */
+        .joke-box {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #f39c12;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #2c3e50;
+            text-align: left;
+        }
+
+        .joke-box::before {
+            content: "😂 ";
+            font-size: 2rem;
+        }
+
+        /* ---------- ГЛАВНАЯ СТРАНИЦА (СЕМЬИ) ---------- */
+        .main-page {
+            max-width: 1000px;
+            padding: 40px 30px;
+        }
+
+        .main-page h1 {
+            font-size: 3rem;
+            color: #2c3e50;
+        }
+
+        .main-page p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+        }
+
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .family-card {
+            background: white;
+            border-radius: 30px;
+            padding: 20px 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .family-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+        }
+        .family-card:active { transform: scale(0.95); }
+
+        .family-card .emoji-big { font-size: 3.5rem; }
+        .family-card .family-name { font-size: 1.3rem; font-weight: 600; color: #2c3e50; }
+        .family-card .family-sub { font-size: 0.8rem; color: #95a5a6; }
+
+        /* ---------- СТРАНИЦЫ СЕМЕЙ ---------- */
+        .family-page {
+            display: none;
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .family-page.active {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .family-page h1 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .family-page p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .family-page .family-photo {
+            max-width: 100%;
+            border-radius: 30px;
+            margin: 10px 0;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            max-height: 450px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .family-page .family-photo:not(:last-child) {
+            margin-bottom: 15px;
+        }
+
+        .family-page .btn-back {
+            background: rgba(0,0,0,0.1);
+            border: none;
+            padding: 14px 35px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+            color: #2c3e50;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+
+        .family-page .btn-back:hover {
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* ---------- ЛЕПЕСТКИ ---------- */
+        .petal {
+            position: fixed;
+            width: 22px;
+            height: 22px;
+            border-radius: 50% 0 50% 50%;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite, shimmer 4s ease-in-out infinite alternate;
+            z-index: 1;
+            filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.1));
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0.9); opacity: 0.9; }
+            100% { transform: translateY(110vh) rotate(720deg) scale(1.2); opacity: 0.2; }
+        }
+
+        @keyframes shimmer {
+            0% { background: #ffab91; box-shadow: 0 0 15px #ffab91; }
+            33% { background: #ffcc80; box-shadow: 0 0 25px #ffcc80; }
+            66% { background: #ffd54f; box-shadow: 0 0 20px #ffd54f; }
+            100% { background: #ffab91; box-shadow: 0 0 30px #ffab91; }
+        }
+
+        .petal:nth-child(odd) { width: 18px; height: 18px; }
+        .petal:nth-child(3n) { width: 26px; height: 26px; }
+        .petal:nth-child(5n+2) { width: 20px; height: 20px; }
+        .petal:nth-child(7n+4) { width: 30px; height: 30px; border-radius: 30% 0 30% 30%; }
+
+        /* ---------- ПЛАВАЮЩИЕ ЭМОДЗИ ---------- */
+        .floating-emoji {
+            position: fixed;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatEmoji 12s ease-in-out infinite alternate;
+            opacity: 0.4;
+        }
+
+        @keyframes floatEmoji {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(40px, -60px) rotate(20deg) scale(1.2); }
+        }
+
+        /* ---------- КОНФЕТТИ ---------- */
+        .confetti-piece {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 20;
+            animation: confettiFall 3s ease-in forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0.5); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg) scale(1.2); opacity: 0; }
+        }
+
+        /* ---------- АДАПТИВ ---------- */
+        @media (max-width: 600px) {
+            .page { padding: 25px 20px; }
+            .page h1 { font-size: 2rem; }
+            .page .question { font-size: 1.3rem; }
+            .options button { font-size: 1.1rem; padding: 14px 20px; }
+            .btn-next { font-size: 1.2rem; padding: 16px 40px; }
+            .welcome-icon { font-size: 4rem; }
+            .main-page { padding: 25px 15px; }
+            .main-page h1 { font-size: 2.2rem; }
+            .family-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+            .family-card { padding: 15px 10px; }
+            .family-card .emoji-big { font-size: 2.5rem; }
+            .family-card .family-name { font-size: 1rem; }
+            .family-page h1 { font-size: 2rem; }
+            .family-page p { font-size: 1.1rem; }
+            .family-page .family-photo { max-height: 350px; }
+            .floating-emoji { font-size: 1.5rem; }
+            .joke-box { font-size: 1rem; padding: 20px; }
+        }
+
+        @media (max-width: 400px) {
+            .family-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+            .family-card .emoji-big { font-size: 2rem; }
+            .family-card .family-name { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== СТРАНИЦА 0: ПРИВЕТСТВИЕ ========== -->
+    <div class="page active" id="welcome">
+        <div class="welcome-icon">🌸</div>
+        <h1>Дорогие родственники!</h1>
+        <p class="welcome-text">
+            Мы решили сделать ваш день чуточку теплее и веселее.<br />
+            Пройдите небольшой квест, чтобы попасть в нашу семейную галерею с тёплыми пожеланиями.<br />
+            Готовы?
+        </p>
+        <button class="btn-next" onclick="startQuest()">Начать квест 🚀</button>
+    </div>
+
+    <!-- ========== КВЕСТ: СТРАНИЦА 1 (Вопрос 1) ========== -->
+    <div class="page" id="quest1">
+        <h1>🔍 Квест</h1>
+        <p class="question">Какое главное хобби нашей семьи?</p>
+        <div class="options">
+            <button onclick="checkAnswer1('рыбалка')">🎣 Рыбалка</button>
+            <button onclick="checkAnswer1('скейт')">🛹 Катание на скейтборде</button>
+            <button onclick="checkAnswer1('лыжи')">⛷️ Лыжи</button>
+        </div>
+    </div>
+
+    <!-- ========== КВЕСТ: СТРАНИЦА 2 (Вопрос 2) ========== -->
+    <div class="page" id="quest2">
+        <h1>🧮 Математика</h1>
+        <p class="question">Сколько будет 2 + 2 × 2?</p>
+        <div class="options">
+            <button onclick="checkAnswer2('6')">6</button>
+            <button onclick="checkAnswer2('8')">8</button>
+            <button onclick="checkAnswer2('4')">4</button>
+        </div>
+    </div>
+
+    <!-- ========== КВЕСТ: СТРАНИЦА 3 (Анекдот) ========== -->
+    <div class="page" id="quest3">
+        <h1>😂 Семейный юмор</h1>
+        <div class="joke-box">
+            <p><strong>Семейный анекдот:</strong></p>
+            <p>— Папа, а почему у нас в доме всегда пахнет рыбой?<br>
+            — Потому что я люблю рыбалку, а мама любит меня, поэтому она терпит запах рыбы! 🐟<br>
+            — А почему мама всегда улыбается, когда ты возвращаешься с рыбалки?<br>
+            — Потому что она знает, что я принёс ужин!</p>
+            <p style="margin-top: 10px; font-style: italic;">😄 А теперь давайте дальше!</p>
+        </div>
+        <button class="btn-next" onclick="goToMain()">Идём дальше 🚀</button>
+    </div>
+
+    <!-- ========== ГЛАВНАЯ СТРАНИЦА (СЕМЬИ) ========== -->
+    <div class="page main-page" id="mainPage">
+        <h1>❤️ Наши любимые</h1>
+        <p>Нажми на имя, чтобы получить тёплые пожелания</p>
+        <div class="family-grid" id="familyGrid"></div>
+    </div>
+
+    <!-- ========== КОНТЕЙНЕР ДЛЯ СТРАНИЦ СЕМЕЙ ========== -->
+    <div id="familyPagesContainer"></div>
+
+    <script>
+        // ============================================================
+        // 1. ФУНКЦИИ НАВИГАЦИИ
+        // ============================================================
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function startQuest() {
+            showPage('quest1');
+        }
+
+        // ============================================================
+        // 2. ФУНКЦИИ КВЕСТА
+        // ============================================================
+        function checkAnswer1(answer) {
+            if (answer === 'рыбалка') {
+                showPage('quest2');
+            } else {
+                location.reload(); // перезагрузка – вернёт на приветствие
+            }
+        }
+
+        function checkAnswer2(answer) {
+            if (answer === '6') {
+                showPage('quest3');
+            } else {
+                location.reload();
+            }
+        }
+
+        function goToMain() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('mainPage').classList.add('active');
+            launchConfetti();
+        }
+
+        // ============================================================
+        // 3. ДАННЫЕ О СЕМЬЯХ
+        // ============================================================
+        const families = [{
+            id: 'babushka',
+            name: 'Любимой бабушке',
+            emoji: '👵',
+            color: '#d4a373',
+            bgGradient: 'linear-gradient(135deg, #fef0e0, #fce4d6)',
+            petalColors: ['#d4a373', '#e6b88a', '#f2d0a4'],
+            title: '👵 Любимой бабушке',
+            text: 'Наша дорогая бабушка!<br>Ты — наше тепло, наша мудрость и самое большое счастье. Пусть каждый день дарит тебе здоровье, улыбки и заботу. Мы тебя очень сильно любим и всегда рядом!',
+            photo: 'https://i.imgur.com/ku0WLgE.jpg'
+        }, {
+            id: 'nizamovy',
+            name: 'Низамовы',
+            emoji: '🌺',
+            color: '#ff6b6b',
+            bgGradient: 'linear-gradient(135deg, #ffe0e0, #ffb3b3)',
+            petalColors: ['#ff6b6b', '#ff8a8a', '#ffb3b3'],
+            title: '🌺 Низамовы',
+            text: 'Дорогие Низамовы!<br>Вы — наша опора и радость. Пусть каждый день приносит только тёплые моменты, а дом всегда будет полон смеха и уюта. Любим вас бесконечно!',
+            photo: 'https://imgur.com/IV4ndBo.jpg'
+        }, {
+            id: 'hadjiakhmetovy',
+            name: 'Хаджиахметовы',
+            emoji: '🌿',
+            color: '#4ecdc4',
+            bgGradient: 'linear-gradient(135deg, #d4f4f0, #b2e6e0)',
+            petalColors: ['#4ecdc4', '#6eddd5', '#a6ece6'],
+            title: '🌿 Хаджиахметовы',
+            text: 'Наши родные Хаджиахметовы!<br>Ваша доброта и мудрость — пример для всех. Желаем вам здоровья, гармонии и много-много солнечных дней. Спасибо, что вы есть!',
+            photo: 'https://i.imgur.com/aVgOfpi.jpg'
+        }, {
+            id: 'ivlevy',
+            name: 'Ивлевы',
+            emoji: '🌸',
+            color: '#f8b4d9',
+            bgGradient: 'linear-gradient(135deg, #fce4ec, #f8bbd0)',
+            petalColors: ['#f8b4d9', '#fbc8e0', '#fddce8'],
+            title: '🌸 Ивлевы',
+            text: 'Ивлевы, вы — как весенний сад!<br>Пусть в вашей жизни всегда цветут счастье, любовь и взаимопонимание. Ценим каждую минуту, проведённую с вами!',
+            photo: 'https://i.imgur.com/kTMMihN.jpg'
+        }, {
+            id: 'tolstoluckie',
+            name: 'Толстолуцкие',
+            emoji: '🍂',
+            color: '#e67e22',
+            bgGradient: 'linear-gradient(135deg, #fdebd0, #fad7a0)',
+            petalColors: ['#e67e22', '#f0a04b', '#f5b96c'],
+            title: '🍂 Толстолуцкие',
+            text: 'Толстолуцкие — вы наша крепость!<br>Желаем вам тёплых вечеров в кругу семьи, вкусных ужинов и бесконечного счастья. Пусть каждый день будет уютным, как дома.',
+            photo: 'https://i.imgur.com/MDjlhEt.jpg'
+        }, {
+            id: 'shlykovy',
+            name: 'Шлыковы',
+            emoji: '🌻',
+            color: '#f1c40f',
+            bgGradient: 'linear-gradient(135deg, #fef9e7, #f9e79f)',
+            petalColors: ['#f1c40f', '#f4d03f', '#f7dc6f'],
+            title: '🌻 Шлыковы',
+            text: 'Шлыковы — вы солнечные лучики!<br>Пусть ваша жизнь будет яркой, как подсолнухи, а каждый новый день приносит только радость и хорошие новости. Обнимаем вас крепко!',
+            photo: ['https://i.imgur.com/ZR6A902.jpg', 'https://i.imgur.com/AKSv1ZI.jpg']
+        }, {
+            id: 'nurpeisovy',
+            name: 'Нурпеисовы',
+            emoji: '🌊',
+            color: '#2980b9',
+            bgGradient: 'linear-gradient(135deg, #d6eaf8, #aed6f1)',
+            petalColors: ['#2980b9', '#5499c7', '#85c1e9'],
+            title: '🌊 Нурпеисовы',
+            text: 'Нурпеисовы — вы как морской бриз!<br>Желаем вам глубины счастья, чистоты отношений и бесконечного вдохновения. Пусть всё у вас складывается легко и красиво.',
+            photo: [
+                'https://i.imgur.com/MfqOHUB.jpg',
+                'https://imgur.com/qG4FILx.jpg'
+            ] 
+        }, {
+            id: 'zyazeva',
+            name: 'Зязевы',
+            emoji: '💎',
+            color: '#8e44ad',
+            bgGradient: 'linear-gradient(135deg, #e8daef, #d7bde2)',
+            petalColors: ['#8e44ad', '#a569bd', '#bb8fce'],
+            title: '💎 Зязевы',
+            text: 'Зязевы — вы наше сокровище!<br>Пусть ваша жизнь переливается всеми цветами радости, как драгоценный камень. Здоровья, удачи и самых тёплых объятий!',
+            photo: 'https://i.imgur.com/UTqyuYs.jpg'
+        }];
+
+        // ============================================================
+        // 4. РЕНДЕРИНГ СЕМЕЙНЫХ КАРТОЧЕК
+        // ============================================================
+        const grid = document.getElementById('familyGrid');
+        const container = document.getElementById('familyPagesContainer');
+
+        families.forEach(family => {
+            // Карточка
+            const card = document.createElement('div');
+            card.className = 'family-card';
+            card.style.borderColor = family.color;
+            card.style.background = `linear-gradient(135deg, ${family.color}15, ${family.color}08)`;
+            card.innerHTML = `
+                <div class="emoji-big">${family.emoji}</div>
+                <div class="family-name">${family.name}</div>
+                <div class="family-sub">нажмите</div>
+            `;
+            card.addEventListener('click', () => openFamily(family.id));
+            grid.appendChild(card);
+
+            // Страница семьи
+            const page = document.createElement('div');
+            page.className = 'family-page';
+            page.id = 'page-' + family.id;
+            page.style.background = family.bgGradient;
+            page.style.border = `2px solid ${family.color}`;
+
+            let photosHtml = '';
+            if (Array.isArray(family.photo)) {
+                photosHtml = family.photo.map(url =>
+                    `<img class="family-photo" src="${url}" alt="${family.name}" onerror="this.style.display='none'" />`
+                ).join('');
+            } else {
+                photosHtml =
+                    `<img class="family-photo" src="${family.photo}" alt="${family.name}" onerror="this.style.display='none'" />`;
+            }
+
+            page.innerHTML = `
+                <h1 style="color: ${family.color};">${family.title}</h1>
+                <p>${family.text}</p>
+                ${photosHtml}
+                <button class="btn-back" onclick="closeFamily()">🏠 Назад</button>
+            `;
+            container.appendChild(page);
+        });
+
+        // ============================================================
+        // 5. ФУНКЦИИ ОТКРЫТИЯ/ЗАКРЫТИЯ СЕМЕЙ
+        // ============================================================
+        function openFamily(id) {
+            document.getElementById('mainPage').classList.remove('active');
+            document.querySelectorAll('.family-page').forEach(p => p.classList.remove('active'));
+            const page = document.getElementById('page-' + id);
+            if (page) page.classList.add('active');
+            const family = families.find(f => f.id === id);
+            if (family) {
+                document.body.style.background = family.bgGradient;
+                restartPetals(family.petalColors);
+            }
+            launchConfetti();
+            if (page) page.scrollTop = 0;
+        }
+
+        function closeFamily() {
+            document.getElementById('mainPage').classList.add('active');
+            document.querySelectorAll('.family-page').forEach(p => p.classList.remove('active'));
+            document.body.style.background = 'linear-gradient(135deg, #f5f7fa, #c3cfe2)';
+            restartPetals(['#ffab91', '#ffcc80', '#ffd54f', '#ffab91']);
+        }
+
+        // ============================================================
+        // 6. ЛЕПЕСТКИ, ЭМОДЗИ, КОНФЕТТИ
+        // ============================================================
+        let petalInterval;
+        let currentColors = ['#ffab91', '#ffcc80', '#ffd54f', '#ffab91'];
+
+        function createPetal(colors) {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            petal.style.left = Math.random() * 100 + '%';
+            const duration = 8 + Math.random() * 8;
+            petal.style.animationDuration = duration + 's';
+            petal.style.animationDelay = Math.random() * 5 + 's';
+            const size = 18 + Math.random() * 14;
+            petal.style.width = size + 'px';
+            petal.style.height = size + 'px';
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            petal.style.background = color;
+            petal.style.boxShadow = `0 0 20px ${color}80`;
+            document.body.appendChild(petal);
+            setTimeout(() => { if (petal.parentNode) petal.remove(); }, (duration + 5) * 1000);
+        }
+
+        function startPetals(colors) {
+            if (petalInterval) clearInterval(petalInterval);
+            currentColors = colors || ['#ffab91', '#ffcc80', '#ffd54f', '#ffab91'];
+            for (let i = 0; i < 15; i++) setTimeout(() => createPetal(currentColors), i * 150);
+            const isMobile = window.innerWidth < 600;
+            const interval = isMobile ? 500 : 350;
+            petalInterval = setInterval(() => createPetal(currentColors), interval);
+        }
+
+        function restartPetals(colors) {
+            document.querySelectorAll('.petal').forEach(el => el.remove());
+            startPetals(colors);
+        }
+
+        function createFloatingEmojis() {
+            const emojis = ['🌟', '✨', '🎉', '❤️', '😊', '🎈', '🎊', '💖', '🌸', '🌺', '🌻', '🍀'];
+            for (let i = 0; i < 14; i++) {
+                const el = document.createElement('div');
+                el.className = 'floating-emoji';
+                el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                el.style.left = Math.random() * 100 + '%';
+                el.style.top = Math.random() * 100 + '%';
+                el.style.animationDelay = (Math.random() * 6) + 's';
+                el.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
+                el.style.opacity = 0.3 + Math.random() * 0.3;
+                document.body.appendChild(el);
+            }
+        }
+
+        function launchConfetti() {
+            const colors = ['#ff6f61', '#ffcc02', '#4caf50', '#2196f3', '#e91e63', '#9c27b0', '#ff9800', '#00bcd4'];
+            for (let i = 0; i < 70; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.top = '-10px';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.width = (6 + Math.random() * 10) + 'px';
+                piece.style.height = (6 + Math.random() * 10) + 'px';
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                piece.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+                piece.style.animationDelay = (Math.random() * 1.5) + 's';
+                document.body.appendChild(piece);
+                setTimeout(() => { if (piece.parentNode) piece.remove(); }, 4500);
+            }
+        }
+
+        // ============================================================
+        // 7. ЗАПУСК
+        // ============================================================
+        window.addEventListener('load', function() {
+            // По умолчанию активна страница приветствия (у неё класс active)
+            startPetals(['#ffab91', '#ffcc80', '#ffd54f', '#ffab91']);
+            createFloatingEmojis();
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (petalInterval) clearInterval(petalInterval);
+        });
+    </script>
+</body>
+</html>
